@@ -1,0 +1,22 @@
+def solution(msg):
+    al = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alphabet = {}
+    for a, b in enumerate(al):
+        alphabet[b] = a+1
+        
+    res = []
+    new = 27
+    x, y = 0, 0
+    while True:
+        y += 1
+        if msg[x : x+y] not in alphabet:
+            res.append(alphabet[msg[x : x+y-1]])
+            alphabet[msg[x : x+y]] = new
+            new += 1
+            x += y-1
+            y = 0
+        else:
+            if x+y-1 == len(msg):
+                res.append(alphabet[msg[x : x+y-1]])
+                break
+    return res
