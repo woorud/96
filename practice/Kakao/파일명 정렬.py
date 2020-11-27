@@ -10,6 +10,7 @@ def solution(files):
     res = []
     for i in files_sorted:
         res.append("".join(i))
+        
     return res
 
 
