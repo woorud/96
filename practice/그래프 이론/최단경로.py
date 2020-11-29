@@ -33,7 +33,7 @@ def Dijkstra(start):
                 #계산했던 next_wei를 가중치 테이블에 업데이트.
                 dp[next_node] = next_wei
                 #다음 점 까지의 가증치와 다음 점에 대한 정보를 튜플로 묶어 최소 힙에 삽입.
-                heapq.heappush(heap,(next_wei,next_node))
+                heapq.heappush(heap, (next_wei, next_node))
 
 #초기화
 for _ in range(E):
