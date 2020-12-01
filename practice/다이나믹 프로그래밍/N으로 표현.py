@@ -2,6 +2,7 @@ def solution(N, number):
     dp = [0, {N}]
     if N == number:
         return 1
+    
     for i in range(2, 9):
         s = {int(str(N)*i)}
         for j in range(1, i//2+1):
