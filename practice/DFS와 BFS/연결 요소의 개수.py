@@ -1,29 +1,30 @@
 from collections import deque
-import sys
+def _11724():
+    n, m = map(int, input().split())
+    graph = [[] for _ in range(n+1)]
+    visited = [False] * (n+1)
+    for _ in range(m):
+        u, v = map(int, input().split())
+        graph[u].append(v)
+        graph[v].append(u)
 
-n, m = map(int, sys.stdin.readline().split())
+    def bfs(v):
+        q = deque()
+        q.append(v)
+        visited[v] = True
+        while q:
+            x = q.popleft()
+            for i in graph[x]:
+                if visited[i] == False:
+                    q.append(i)
+                    visited[i] = True
 
-graph = [[] for i in range(n+1)]
-for i in range(m):
-    a, b = map(int, sys.stdin.readline().split())
-    graph[a].append(b)
-    graph[b].append(a)
-visited = [False] * (n+1)
+    cnt = 0
+    for i in range(1, n+1):
+        if visited[i] == False:
+            bfs(i)
+            cnt += 1
+    print(cnt)
 
-def bfs(v):
-    q = deque()
-    q.append(v)
-    while q:
-        x = q.popleft()
-        for i in graph[x]:
-            if visited[i] == False:
-                q.append(i)
-                visited[i] = True
 
-cnt = 0
-for i in range(1, n+1):
-    if visited[i] == False:
-        bfs(i)
-        cnt += 1
-
-sys.stdout.write(str(cnt))
+_11724()
