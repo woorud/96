@@ -1,33 +1,33 @@
-n = int(input())
-m = [list(map(int, input())) for i in range(n)]
-
-def bfs(m, y, x):
-    cnt = 1
-
-    q = [[y, x]]
-    m[y][x] = 0
-    dx = [1, -1, 0, 0]
-    dy = [0, 0, -1, 1]
-    while q:
-        y, x = q.pop(0)
-
-        for i in range(4):
-            ny = y + dy[i]
-            nx = x + dx[i]
-
-            if nx >= 0 and nx < n and ny >= 0 and ny < n:
-                if m[ny][nx] == 1:
+from collections import deque
+def _2667():
+    def bfs(i, j):
+        dx = [-1, 1, 0, 0]
+        dy = [0, 0, -1, 1]
+        q = deque()
+        q.append((i, j))
+        apt[i][j] = "0"
+        cnt = 1
+        while q:
+            x, y = q.popleft()
+            for i in range(4):
+                nx = x + dx[i]
+                ny = y + dy[i]
+                if 0 <= nx < n and 0 <= ny < n and apt[nx][ny] == "1":
+                    q.append((nx, ny))
+                    apt[nx][ny] = "0"
                     cnt += 1
-                    m[ny][nx] = 0
-                    q.append([ny, nx])
-    return cnt
+        return cnt
 
-res = []
-for i in range(n):
-    for j in range(n):
-        if m[i][j] == 1:
-            res.append(bfs(m, i, j))
+    n = int(input())
+    apt = [list(input()) for _ in range(n)]
+    res = []
+    for i in range(n):
+        for j in range(n):
+            if apt[i][j] == "1":
+                res.append(bfs(i, j))
+    print(len(res))
+    for i in sorted(res):
+        print(i)
 
-print(len(res))
-for cnt in sorted(res):
-    print(cnt)
+
+_2667()
