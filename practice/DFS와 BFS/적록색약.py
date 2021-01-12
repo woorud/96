@@ -1,44 +1,46 @@
-from collections import deque
 import copy
+from collections import deque
 
-def bfs(vistied, i, j, arr):
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
+def _10026():
+    def bfs(arr, visited, i, j):
+        dx = [-1, 1, 0, 0]
+        dy = [0, 0, -1, 1]
 
-    q = deque()
-    q.append((i, j))
-    vistied[i][j] = True
+        q = deque()
+        q.append((i, j))
+        visited[i][j] = True
 
-    while q:
-        x, y = q.popleft()
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0<= nx < n and 0 <= ny < n and vistied[nx][ny] == False:
-                if arr[x][y] == arr[nx][ny]:
-                    q.append((nx, ny))
-                    vistied[nx][ny] = True
+        while q:
+            x, y = q.popleft()
+            for i in range(4):
+                nx = x + dx[i]
+                ny = y + dy[i]
+                if 0 <= nx < n and 0 <= ny < n and visited[nx][ny] == False:
+                    if arr[x][y] == arr[nx][ny]:
+                        q.append((nx, ny))
+                        visited[nx][ny] = True
 
+    n = int(input())
+    can = [list(input()) for _ in range(n)]
+    cant = copy.deepcopy(can)
+    for i in range(n):
+        for j in range(n):
+            if cant[i][j] == "R":
+                cant[i][j] = "G"
 
-n = int(input())
-rgb = [list(input()) for i in range(n)]
-blind = copy.deepcopy(rgb)
-for i in range(n):
-    for j in range(n):
-        if blind[i][j] == "G":
-            blind[i][j] = "R"
+    visited_can = [[False]*n for _ in range(n)]
+    visited_cant = [[False]*n for _ in range(n)]
 
-rgb_visited = [[False]*n for i in range(n)]
-blind_visited = [[False]*n for i in range(n)]
+    cnt_can = 0
+    cnt_cant = 0
+    for i in range(n):
+        for j in range(n):
+            if visited_can[i][j] == False:
+                bfs(can, visited_can, i, j)
+                cnt_can += 1
+            if visited_cant[i][j] == False:
+                bfs(cant, visited_cant, i, j)
+                cnt_cant += 1
+    print(cnt_can, cnt_cant)
 
-res1 = 0
-res2 = 0
-for i in range(n):
-    for j in range(n):
-        if rgb_visited[i][j] == False:
-            bfs(rgb_visited, i, j, rgb)
-            res1 += 1
-        if blind_visited[i][j] == False:
-            bfs(blind_visited, i, j, blind)
-            res2 += 1
-print(res1, res2)
+_10026()
