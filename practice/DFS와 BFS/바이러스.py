@@ -1,21 +1,31 @@
-n = int(input())
-p = int(input())
-adj = [[] for _ in range(n+1)]
-visited = [False] * (n+1)
-cnt = 0
+from collections import deque, defaultdict
+def _2606():
+    def bfs(x):
+        q = deque()
+        q.append(x)
+        visited[x] = True
+        cnt = 0
+        while q:
+            cnt += 1
+            z = q.popleft()
+            for i in d[z]:
+                if visited[i] == False:
+                    visited[i] = True
+                    q.append(i)
+        return cnt-1
 
-for _ in range(p):
-    x, y = map(int, input().split())
-    adj[x].append(y)
-    adj[y].append(x)
 
-def dfs(now_pos):
-    global cnt
-    cnt += 1
-    visited[now_pos] = True
-    for next_pos in adj[now_pos]:
-        if not visited[next_pos]:
-            dfs(next_pos)
+    n = int(input())
+    m = int(input())
+    d = defaultdict(lambda:[])
+    for i in range(m):
+        a, b = map(int, input().split())
+        d[a].append(b)
+        d[b].append(a)
+    visited = [False]*(n+1)
+    print(bfs(1))
 
-dfs(1)
-print(cnt-1)
+
+
+
+_2606()
