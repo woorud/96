@@ -1,46 +1,54 @@
-s = []
-dx = [0, 0, -1, 1]
-dy = [-1, 1, 0, 0]
-max_result = 0
-def bfs():
-    global max_result
-    visited = [[0] * m for i in range(n)]
-    for i in range(n):
-        for j in range(m):
-            visited[i][j] = s[i][j]
-    result = 0
-    arr = []
-    for i in range(n):
-        for j in range(m):
-            if copy[i][j] == 2:
-                arr.append([i, j])
-    while arr:
-        a, b = arr[0][0], arr[0][1]
-        del arr[0]
-        for i in range(4):
-            ax = a + dx[i]
-            ay = b + dy[i]
-            if 0 <= ax and 0 <= ay and ax < n and ay < m:
-                if visited[ax][ay] == 0:
-                    visited[ax][ay] = 2
-                    arr.append([ax, ay])
-    for i in visited:
-        for j in i:
-            if j == 0:
-                result += 1
-    max_result = max(max_result, result)
-def wall(cnt):
-    if cnt == 3:
-        bfs()
-        return
-    for i in range(n):
-        for j in range(m):
-            if s[i][j] == 0:
-                s[i][j] = 1
-                wall(cnt + 1)
-                s[i][j] = 0
-n, m = map(int, input().split())
-for i in range(n):
-    s.append(list(map(int, input().split())))
-wall(0)
-print(max_result)
+from collections import deque
+import copy
+def _14502():
+    def area(arr):
+        s = 0
+        for i in range(n):
+            for j in range(m):
+                if arr[i][j] == 0:
+                    s += 1
+        return s
+
+    def bfs():
+        dx = [-1, 1, 0, 0]
+        dy = [0, 0, -1, 1]
+
+        c_maps = copy.deepcopy(maps)
+
+        q = deque()
+        visited = [[False]*m for _ in range(n)]
+        for i in range(n):
+            for j in range(m):
+                if c_maps[i][j] == 2:
+                    q.append((i, j))
+                    visited[i][j] = True
+
+        while q:
+            x, y = q.popleft()
+            for i in range(4):
+                nx = x + dx[i]
+                ny = y + dy[i]
+                if 0 <= nx < n and 0 <= ny < m and c_maps[nx][ny] == 0 and visited[nx][ny] == False:
+                    q.append((nx, ny))
+                    c_maps[nx][ny] = 2
+                    visited[nx][ny] = True
+        return area(c_maps)
+
+    res = []
+    def wall(cnt):
+        if cnt == 3:
+            res.append(bfs())
+            return
+        for i in range(n):
+            for j in range(m):
+                if maps[i][j] == 0:
+                    maps[i][j] = 1
+                    wall(cnt+1)
+                    maps[i][j] = 0
+
+    n, m = map(int, input().split())
+    maps = [list(map(int, input().split())) for _ in range(n)]
+    wall(0)
+    print(max(res))
+
+_14502()
